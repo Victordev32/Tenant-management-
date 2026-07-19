@@ -1,29 +1,26 @@
-
-
-<div class="md:flex flex-col bg-blue-400 md:w-auto text-white hidden absolute left-0 top-10 bottom-0 p-2 text-20 pt-5 ">
-   <div class="flex border-b-1 border-white px-3 py-1" w-["100%"]>
-     
-    <i class="fa-solid fa-gauge"></i>
-     <a href="/">Dashboard</a>
-   </div>
-  <div class="flex border-b-1 border-white px-3 py-1">
-    <i class="fa-solid fa-users"></i>
-     <a href="/">Tenants</a>
+<div class="bg-blue-400 p-3 text-white h-100 mr-1 hidden md:flex flex-col w-["600px"]>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row align-center ">
+       <i class="fa-solid fa-home"></i>
+       <a href="{% url 'dashboard'%}">Dashboard</a>
   </div>
-  <div class="flex border-b-1 border-white px-3 py-1">
-    <i class="fa-solid fa-building"></i>
-     <a href="/">Apartments</a>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row align-center ">
+       <i class="fa-solid fa-users"></i>
+       <a href="{% url 'tenants'%}">Tenants</a>
   </div>
-  <div class="flex border-b-1 border-white px-3 py-1">
-    <i class="fa-solid fa-credit-card"></i>
-     <a href="/">Payments</a>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row aligngn-center ">
+       <i class="fa-solid fa-building"></i>
+       <a href="{% url 'dashboard'%}">Apartments</a>
   </div>
-  <div class="flex border-b-1 border-white px-3 py-1">
-    <i class="fa-solid fa-gear"></i>
-     <a href="/">Settings</a>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row align-center ">
+       <i class="fa-solid fa-credit-card"></i>
+       <a href="{% url 'tenants'%}">Payments</a>
   </div>
-  <div class="flex border-b-1 border-white px-3 py-1">
-    <i class="fa-solid fa-"></i>
-     <a href="/">Log out</a>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row align-center ">
+       <i class="fa-solid fa-gear"></i>
+       <a href="{% url 'dashboard'%}">Settings</a>
+  </div>
+  <div class="hover:border-b-2 hover:border-b-white m-1 p-2 flex flex-row align-center ">
+       <i class="fa-solid fa-arrow-right"></i>
+       <a href="{% url 'tenants'%}">Log out</a>
   </div>
 </div>

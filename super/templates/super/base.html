@@ -10,13 +10,13 @@
 <body>
      {% include './partials/header.html'%}
 
-      <div class="md:flex md:flex-row">
+      <div class="flex flex-row w-full">
      {%  include './partials/sidebar.html' %}
-        <div class="m-1">
+        <div class="m-2">
      {% block content %}
 
 
-    {% endblock %}
+     {% endblock %}
         </div>
       </div>
 </body>
