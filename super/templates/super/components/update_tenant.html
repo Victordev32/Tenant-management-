@@ -1,9 +1,9 @@
 {% extends "../base.html"%}
-{% block title %}Tenants {% endblock%}
+{% block title %}Tenants-Update{% endblock%}
 {% block content%}
-  <div class="flex flex-col  w-100 ">
-    <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
-     <h3 class="text-lg font-bold text-center">Add tenant</h3>
+ <div class="flex flex-col  w-100 ">
+   <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
+     <h3 class="text-lg font-bold text-center">Update tenant</h3>
     <div class="flex flex-col gap-3">
        {% for message in messages %}
             <div class="p-2 bg-gray-3000">
@@ -14,8 +14,7 @@
       <form method="post" class="shadow-lg rounded m-2 p-3 w-90 md:w-80">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit" class="bg-green-400 rounded text-white active:bg-green-600 m-3 p-2 ">Submit</button>
+        <button type="submit" class="bg-green-400 rounded text-white active:bg-green-600 m-3 p-2 ">Update</button>
       </form>
-  </div>
-  
+</div>
 {% endblock %}

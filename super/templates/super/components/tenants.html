@@ -2,6 +2,7 @@
 {% block title %}Tenants {% endblock%}
 {% block content%}
  <div class="w-full">
+   <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
    <div class="">
        <div class="flex flex-col gap-3">
        {% for message in messages %}
@@ -17,11 +18,11 @@
        <table class="shadow-lg p-2 table-auto w-full border-collapse">
           <thead>
             <tr class="border-b-3 border-gray-300">
-              <th scope='col'>#</th>
-              <th scope='col'>Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone number</th>
-              <th scope="col">Actions</th>
+              <th scope='col' class="p-2 m-2">#</th>
+              <th scope='col' class="p-2 m-2">Name</th>
+              <th scope="col" class="p-2 m-2">Email</th>
+              <th scope="col" class="p-2 m-2">Phone number</th>
+              <th scope="col" class="p-2 m-2">Actions</th>
             </tr>
           </thead>
          <tbody>
@@ -32,13 +33,21 @@
                   <td class="p-2 m-2  ">{{tenant.first_name}} {{tenant.second_name}}</td>
                   <td class="p-2 m-2  ">{{tenant.email}}</td>
                   <td class="p-2 m-2  ">{{tenant.phone_number}}</td>
-                  <td class="p-2 m-2">
+                  <td class="p-2 m-2 flex gap-2">
+                    <a class="bg-blue-400 p-1 rounded text-white" href="{% url 'update_tenant' tenant_id=tenant.id%}">Update</a>
                      <form method="post">
                        {% csrf_token %}
+                      
                        <button class="bg-red-300 border-none p-1 rounded text-white" type="submit" name="tenant_id" value="{{tenant.id}}">Delete</button>
+                       
                      </form>
                   </td>
+                  {% empty %}
+                   <td colspan="5" class="p-2 text-center font-bold">
+                     No tenants found
+                   </td>
                 </tr>
+           
             {% endfor %}
          </tbody>
        </table>
