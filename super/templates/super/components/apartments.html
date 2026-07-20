@@ -3,7 +3,7 @@
 {% block content%}
  <div class="w-full">
    <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
-   <div class="w-full">
+   <div class="">
        <div class="flex flex-col gap-3">
        {% for message in messages %}
             <div class="p-2 bg-gray-3000">
@@ -12,28 +12,28 @@
        {% endfor %}
        </div>
      <div class="mx-2 p-2">
-      <a href="{% url 'add_tenants'%}" class="p-2 m-3 bg-green-300 text-white rounded">Add Tenant</a>
+      <a href="{% url 'add_apartments'%}" class="p-2 m-3 bg-green-300 text-white rounded">Add apartment</a>
        </div>
-     <div class="w-full  overflow-x-auto p-3">
+     <div class="w-full overflow-x-auto p-3">
        <table class="shadow-lg p-2 table-auto w-full border-collapse">
           <thead>
             <tr class="border-b-3 border-gray-300">
-              <th scope='col' class="p-1">#</th>
-              <th scope='col' class="p-1">Name</th>
-              <th scope="col" class="p-1">Email</th>
+              <th scope='col' class="p-2 m-2">#</th>
+              <th scope='col' class="p-2 m-2">Name</th>
+              <th scope="col" class="p-2 m-2">Email</th>
               <th scope="col" class="p-2 m-2">Phone number</th>
-              <th scope="col" class="p-1">Actions</th>
+              <th scope="col" class="p-2 m-2">Actions</th>
             </tr>
           </thead>
          <tbody>
              
             {% for tenant in tenants  %}
-                <tr class="p-2 border-b-1 text-center">
+                <tr class="p-2 m-3 border-b-1">
                   <td class="p-2 m-2  ">{{tenant.id}}</td>
                   <td class="p-2 m-2  ">{{tenant.first_name}} {{tenant.second_name}}</td>
                   <td class="p-2 m-2  ">{{tenant.email}}</td>
                   <td class="p-2 m-2  ">{{tenant.phone_number}}</td>
-                  <td class="p-2 m-2 flex items-center gap-2 justify-center">
+                  <td class="p-2 m-2 flex gap-2">
                     <a class="bg-blue-400 p-1 rounded text-white" href="{% url 'update_tenant' tenant_id=tenant.id%}">Update</a>
                      <form method="post">
                        {% csrf_token %}

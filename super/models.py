@@ -12,3 +12,12 @@ class Tenant(models.Model):
 
   def __str__(self):
      return f'{{self.first_name}} {{self.second_name}}'
+
+class Apartment(models.Model):
+  name=models.CharField(max_length=100)
+  location=models.CharField(max_length=100)
+  created_at=models.DateField(auto_now_add=True)
+  updated_at=models.DateField(auto_now=True)
+
+
+

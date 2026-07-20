@@ -5,5 +5,8 @@ urlpatterns=[
   path("",views.dashboard,name="dashboard"),
   path("tenants/",views.tenants,name="tenants"),
   path("tenants/add",views.add_tenants,name="add_tenants"),
-  path("tenants/update/<int:tenant_id>",views.update_tenant,name="update_tenant")
+  path("tenants/update/<int:tenant_id>",views.update_tenant,name="update_tenant"),
+  path("apartments/",views.apartments,name="apartments"),
+
+path("apartments/add",views.add_apartment,name="add_apartments")
 ]

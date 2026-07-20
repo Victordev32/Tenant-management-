@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
 from .models import Tenant
-from .forms import TenantForm
+from .forms import TenantForm,ApartmentForm
 # Create your views here.
 def dashboard(request):
     tenants=Tenant.objects.count()
@@ -47,4 +47,13 @@ def update_tenant(request,tenant_id):
   else:
     form=TenantForm(instance=tenant)
   return render(request,"super/components/update_tenant.html",{"form": form})
+
+def apartments(request):
+  return render(request,"super/components/apartments.html")
+def add_apartment(request):
+  if request.method=="POST":
+    form=ApartmentForm(request.POST)
+  else:
+    form=ApartmentForm()
+  return render(request,"super/components/add_apartment.html",{"form":form})
 

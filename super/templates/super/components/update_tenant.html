@@ -1,7 +1,7 @@
 {% extends "../base.html"%}
 {% block title %}Tenants-Update{% endblock%}
 {% block content%}
- <div class="flex flex-col  w-100 ">
+ <div class="w-full">
    <button onclick="history.back()"><i class="fa-solid fa-arrow-left"></i></button>
      <h3 class="text-lg font-bold text-center">Update tenant</h3>
     <div class="flex flex-col gap-3">
@@ -11,7 +11,7 @@
             </div>
        {% endfor%}
     </div>
-      <form method="post" class="shadow-lg rounded m-2 p-3 w-90 md:w-80">
+      <form method="post" class="shadow-lg rounded m-2 p-3 w-full">
         {% csrf_token %}
         {{form.as_p}}
         <button type="submit" class="bg-green-400 rounded text-white active:bg-green-600 m-3 p-2 ">Update</button>
