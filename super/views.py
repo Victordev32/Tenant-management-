@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib import messages
-from .models import Tenant
+from .models import Tenant,Apartment
 from .forms import TenantForm,ApartmentForm
 # Create your views here.
 def dashboard(request):
@@ -49,11 +49,19 @@ def update_tenant(request,tenant_id):
   return render(request,"super/components/update_tenant.html",{"form": form})
 
 def apartments(request):
-  return render(request,"super/components/apartments.html")
+  apartments=Apartment.objects.all()
+  return render(request,"super/components/apartments.html",{"apartments":apartments})
 def add_apartment(request):
   if request.method=="POST":
     form=ApartmentForm(request.POST)
+    if form.is_valid():
+      form.save()
+      messages.success(request,"Apartment added successfully")
+      redirect("apartments")
+    else:
+      messages.error(request,"Fail to add apartment")
   else:
     form=ApartmentForm()
   return render(request,"super/components/add_apartment.html",{"form":form})
-
+def update_apartment(request):
+  return render(request,"super/components/update_apartment.html")
