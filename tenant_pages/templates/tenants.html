@@ -1,4 +1,4 @@
-{% extends "../base.html"%}
+{% extends "super/base.html"%}
 {% block title %}Tenants {% endblock%}
 {% block content%}
  <div class="w-full">
@@ -29,7 +29,7 @@
              
             {% for tenant in tenants  %}
                 <tr class="p-2 border-b-1 text-center">
-                  <td class="p-2 m-2  ">{{tenant.id}}</td>
+                  <td class="p-2 m-2  ">{{forloop.counter}}</td>
                   <td class="p-2 m-2  ">{{tenant.first_name}} {{tenant.second_name}}</td>
                   <td class="p-2 m-2  ">{{tenant.email}}</td>
                   <td class="p-2 m-2  ">{{tenant.phone_number}}</td>

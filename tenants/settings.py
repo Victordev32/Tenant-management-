@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'super',
+    'tenant_pages',
+    'apartments',
+     'payments'
 ]
 
 MIDDLEWARE = [
