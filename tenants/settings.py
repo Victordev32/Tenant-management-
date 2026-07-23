@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'super',
     'tenant_pages',
     'apartments',
-     'payments'
+    'payments',
+    'accounts',
 ]
 
 MIDDLEWARE = [

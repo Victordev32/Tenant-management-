@@ -33,7 +33,7 @@ def update_tenant(request,tenant_id):
     form=TenantForm(request.POST,instance=tenant)
     if form.is_valid():
       form.save()
-      messages.success(request,"Tenant updated successfully")
+      messages.success(request,"<p class='bg-green-100 p-2>Tenant updated successfully</p>")
       return redirect("tenants")
     else:
       messages.error(request,"Fail to update tenant")

@@ -24,5 +24,6 @@ urlpatterns = [
     path('apartments/',
        include('apartments.urls')),
     path('adm/',
-        include("super.urls"))
+        include("super.urls")),
+    path('accounts/',include('accounts.urls'))
 ]

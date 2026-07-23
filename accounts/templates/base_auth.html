@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{%block title%}TenMa{% endblock%}</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.2.0/css/all.min.css" integrity="sha512-F/yRpRY8sctKzP7exU5PLGejwg/QtjDX6CIy/41nApe7JqdZgCcCzJTNq9Rcp/XwbeeTGillGevBakruY15pxA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+      <header class="bg-blue-400 flex justify-between items-center w-full text-white">
+        <div class="text-lg p-2">
+          <a href="">TenMa</a>
+        </div>
+        <nav>
+            <ul class="flex justify-between p-2 gap-5">
+                <li><a href="{% url 'signup' %}">Sign up</a></li>
+                <li><a href="{% url 'login' %}">Log in </a></li>
+            </ul>
+        </nav>
+      </header>
+     {% block content %}
+     {% endblock%}
+   <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

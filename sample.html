@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Drag & Drop Builder</title>
+  <style>
+    :root {
+      --bg-color: #f4f5f7;
+      --sidebar-width: 260px;
+      --primary-color: #4f46e5;
+      --border-color: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: var(--bg-color);
+      color: #1f2937;
+    }
+
+    /* Sidebar Styling */
+    #sidebar {
+      width: var(--sidebar-width);
+      background: white;
+      border-right: 1px solid var(--border-color);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+
+    .tool {
+      background: #f9fafb;
+      border: 2px dashed #d1d5db;
+      padding: 12px;
+      border-radius: 6px;
+      cursor: grab;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .tool:hover {
+      border-color: var(--primary-color);
+      background: #f5f3ff;
+      color: var(--primary-color);
+    }
+
+    .tool:active {
+      cursor: grabbing;
+    }
+
+    /* Canvas Styling */
+    #canvas-container {
+      flex: 1;
+      padding: 40px;
+      overflow-y: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    #canvas {
+      width: 100%;
+      max-width: 800px;
+      min-height: 500px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: background-color 0.2s;
+    }
+
+    #canvas.drag-over {
+      background-color: #f0fdf4;
+      outline: 2px dashed #22c55e;
+    }
+
+    /* Dropped Elements Base Styling */
+    .dropped-item {
+      position: relative;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      cursor: move;
+    }
+
+    .dropped-item:hover {
+      border-color: #3b82f6;
+      background-color: #eff6ff;
+    }
+
+    /* Delete Button overlay */
+    .delete-btn {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 10px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .dropped-item:hover .delete-btn {
+      display: block;
+    }
+
+    /* Specific Elements styling inside canvas */
+    .dropped-item h1 { font-size: 28px; font-weight: 700; }
+    .dropped-item p { color: #4b5563; line-height: 1.5; }
+    .dropped-item img { max-width: 100%; height: auto; border-radius: 4px; display: block;}
+    .dropped-item button { 
+      background: var(--primary-color); 
+      color: white; 
+      border: none; 
+      padding: 10px 20px; 
+      border-radius: 6px; 
+      font-weight: 500;
+    }
+    .dropped-item .block-div {
+      background: #e5e7eb;
+      padding: 20px;
+      border-radius: 6px;
+      text-align: center;
+      font-style: italic;
+      color: #374151;
+    }
+
+    /* Reorder Placeholder Indicator */
+    .placeholder {
+      height: 4px;
+      background-color: #3b82f6;
+      border-radius: 2px;
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Components Panel -->
+  <div id="sidebar">
+    <h3>Blocks</h3>
+    <div class="tool" draggable="true" data-type="header">Header</div>
+    <div class="tool" draggable="true" data-type="text">Text Paragraph</div>
+    <div class="tool" draggable="true" data-type="image">Image</div>
+    <div class="tool" draggable="true" data-type="button">Button</div>
+    <div class="tool" draggable="true" data-type="block">Block (Div)</div>
+  </div>
+
+  <!-- Interactive Sandbox Canvas -->
+  <div id="canvas-container">
+    <div id="canvas">
+      <!-- Dropped items generate here dynamically -->
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    let draggedType = null;
+    let draggingExistingItem = null;
+
+    // 1. Sidebar Drag Events
+    document.querySelectorAll('.tool').forEach(tool => {
+      tool.addEventListener('dragstart', (e) => {
+        draggedType = tool.getAttribute('data-type');
+        draggingExistingItem = null; // Reset existing flag
+      });
+    });
+
+    // 2. Canvas Dropzone Tracking
+    canvas.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      canvas.classList.add('drag-over');
+      
+      // Calculate active insertion drop zone position
+      const afterElement = getDragAfterElement(canvas, e.clientY);
+      const placeholder = document.querySelector('.placeholder') || document.createElement('div');
+      placeholder.classList.add('placeholder');
+      
+      if (afterElement == null) {
+        canvas.appendChild(placeholder);
+      } else {
+        canvas.insertBefore(placeholder, afterElement);
+      }
+    });
+
+    canvas.addEventListener('dragleave', () => {
+      removePlaceholder();
+      canvas.classList.remove('drag-over');
+    });
+
+    canvas.addEventListener('drop', (e) => {
+      e.preventDefault();
+      canvas.classList.remove('drag-over');
+      
+      const placeholder = document.querySelector('.placeholder');
+      
+      if (draggingExistingItem) {
+        // Handle sorting / reordering existing element
+        if (placeholder) {
+          canvas.insertBefore(draggingExistingItem, placeholder);
+        } else {
+          canvas.appendChild(draggingExistingItem);
+        }
+      } else if (draggedType) {
+        // Handle spawning completely new element from sidebar
+        const newItem = createComponent(draggedType);
+        if (placeholder) {
+          canvas.insertBefore(newItem, placeholder);
+        } else {
+          canvas.appendChild(newItem);
+        }
+      }
+      
+      removePlaceholder();
+      draggedType = null;
+      draggingExistingItem = null;
+    });
+
+    // 3. Dynamic Node Generator Blueprint
+    function createComponent(type) {
+      const wrapper = document.createElement('div');
+      wrapper.classList.add('dropped-item');
+      wrapper.setAttribute('draggable', 'true');
+
+      // Inject structural blueprint based on unique dataset values
+      if (type === 'header') {
+        wrapper.innerHTML = `<h1 contenteditable="true">Click to edit Header</h1>`;
+      } else if (type === 'text') {
+        wrapper.innerHTML = `<p contenteditable="true">Click here to write and style your custom paragraph content text blocks.</p>`;
+      } else if (type === 'image') {
+        wrapper.innerHTML = `<img src="https://picsum.photos" alt="Placeholder Blueprint Asset">`;
+      } else if (type === 'button') {
+        wrapper.innerHTML = `<button contenteditable="true">Click to Edit Button</button>`;
+      } else if (type === 'block') {
+        wrapper.innerHTML = `<div class="block-div" contenteditable="true">Empty Block Wrapper Content Container</div>`;
+      }
+
+      // Add functional administrative delete overlay 
+      const deleteBtn = document.createElement('button');
+      deleteBtn.innerText = 'Delete';
+      deleteBtn.classList.add('delete-btn');
+      deleteBtn.addEventListener('click', () => wrapper.remove());
+      wrapper.appendChild(deleteBtn);
+
+      // Wire up inner canvas reordering mechanics
+      wrapper.addEventListener('dragstart', (e) => {
+        draggingExistingItem = wrapper;
+        draggedType = null; // Clear new block token
+        e.stopPropagation();
+      });
+
+      return wrapper;
+    }
+
+    // 4. Mathematical Bounding Box Calculations for Reordering
+    function getDragAfterElement(container, y) {
+      const draggableElements = [...container.querySelectorAll('.dropped-item:not(.placeholder)')];
+
+      return draggableElements.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2; // Find center line of box
+        
+        if (offset < 0 && offset > closest.offset) {
+          return { offset: offset, element: child };
+        } else {
+          return closest;
+        }
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function removePlaceholder() {
+      const placeholder = document.querySelector('.placeholder');
+      if (placeholder) placeholder.remove();
+    }
+  </script>
+</body>
+</html>

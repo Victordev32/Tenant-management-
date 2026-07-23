@@ -8,4 +8,9 @@ document.addEventListener("DOMContentLoaded",()=>{
 menu_btn.onclick=()=>{
   
   menu.classList.toggle("hidden")
+  
+}
+function walk(e) {
+  alert(4)
+  
 }
